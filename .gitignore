@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+*.pyc
+fourms.pdf
+# local working notes, not for the public repository
+HANDOVER.md
+TODO.md
+WORKLOG.md

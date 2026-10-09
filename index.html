@@ -1,0 +1,818 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>fourMs Lab — Music, Mind, Motion, Machines</title>
+<link rel="icon" href="logo/fourms-logo.png">
+<link rel="stylesheet" href="lib/reveal/reset.css">
+<link rel="stylesheet" href="lib/reveal/reveal.css">
+<link rel="stylesheet" href="lib/reveal/theme/white.css" id="theme">
+<style>
+
+/* ============================================================
+   fourMs visual profile: the colours of the fourMs logo, light
+   traces of motion in green, yellow and orange-red on a warm
+   near-black. Red is the accent and safe as large text; green
+   and yellow are fills and borders, never text on white.
+   ============================================================ */
+:root {
+  --f-red: #B22309;
+  --f-green: #9FD54F;
+  --f-yellow: #F2DF30;
+  --f-night: #130102;
+  --f-red-text: #961C07;        /* the tagline red of the logo */
+  --f-white: #ffffff;
+  --f-green-tint: #eef7e1;
+  --f-yellow-tint: #fdf8d6;
+  --f-red-tint: #fbe9e4;
+  --f-ink: #231310;
+  --f-ink-60: #6e5a55;
+  --f-ink-15: #e6dcda;
+
+  --r-background-color: var(--f-white);
+  --r-main-font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --r-heading-font: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --r-main-color: var(--f-ink);
+  --r-heading-color: var(--f-ink);
+  --r-link-color: var(--f-ink);
+  --r-heading-text-transform: none;
+  --r-heading-font-weight: 700;
+  --r-main-font-size: 44px;
+  --slide-colour: var(--f-green);
+}
+html.dark {
+  --f-ink: #f6eeea;
+  --f-white: #1a0b08;
+  --f-ink-60: #c2aea8;
+  --f-ink-15: #3a2420;
+  --f-green-tint: #24301a;
+  --f-yellow-tint: #34301a;
+  --f-red-tint: #3a1a14;
+  --f-red-text: #ff8a6e;
+  --r-background-color: #1a0b08;
+  color-scheme: dark;
+}
+html.dark body, html.dark .reveal-viewport { background: #1a0b08; }
+/* The question pages keep their own colours in both modes. */
+.reveal .slides section.divider { --f-ink: #231310; }
+.reveal .slides section.divider.on-dark { --f-ink: #ffffff; }
+.reveal h1, .reveal h2, .reveal h3 { letter-spacing: -0.01em; line-height: 1.1; margin: 0 0 .45em; }
+.reveal h2 { font-size: 1.7em; }
+.reveal .slides section { text-align: left; }
+.reveal .slides section.center { text-align: center; }
+.reveal p, .reveal li { line-height: 1.35; }
+.reveal .kicker { font-size: .5em; text-transform: uppercase; letter-spacing: .14em; color: var(--f-ink-60); margin: 0 0 .3em; }
+.reveal .kicker::before { content: ""; display: inline-block; width: 1.6em; height: .35em; border-radius: .2em; background: var(--slide-colour); margin-right: .6em; vertical-align: middle; }
+.reveal .lead { font-size: 1.15em; color: var(--f-ink); }
+.reveal .muted { color: var(--f-ink-60); }
+.reveal .big { font-size: 1.9em; font-weight: 700; line-height: 1.15; }
+.reveal .statement { font-size: 2.1em; font-weight: 700; line-height: 1.25; max-width: 20em; margin: 0 auto; }
+.reveal .statement em { font-style: normal; color: var(--f-red-text); }
+.reveal img { margin: 0; }
+.reveal .fig { display: block; max-width: 100%; max-height: 74vh; margin: 0 auto; object-fit: contain; }
+
+/* Question pages */
+.reveal .q { font-size: 5em; font-weight: 700; margin: 0; color: var(--f-ink); line-height: 1; }
+.reveal .divider .q-sub { font-size: 1em; color: var(--f-ink); margin-top: .5em; max-width: 26em; }
+
+/* Title */
+.title-grid { display: grid; grid-template-columns: 640px 1fr; gap: 100px; align-items: center; }
+.reveal .mark svg { display: block; width: 620px; height: 620px; overflow: visible; }
+.reveal .mark.closing svg { width: 560px; height: 560px; margin: 0 auto .4em; }
+.reveal .title-name { font-size: 5em; font-weight: 700; margin: 0; line-height: 1; letter-spacing: .02em; }
+.reveal .tagline { font-size: 1.1em; font-weight: 700; margin: .4em 0 .8em; line-height: 1.25; }
+.reveal .title-rule { border: 0; height: .3em; width: 4em; border-radius: .2em; background: var(--f-red); margin: .2em 0 .8em; }
+.reveal .presenter { font-size: .8em; line-height: 1.5; }
+
+/* Cards, grids */
+.reveal .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2em; align-items: center; }
+.reveal .cols.top { align-items: start; }
+.reveal .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1em; }
+.reveal .cols4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: .9em; }
+.reveal .card { background: var(--f-green-tint); border-radius: 18px; padding: .8em 1em; font-size: .9em; }
+.reveal .card.red { background: var(--f-red-tint); }
+.reveal .card h3 { font-size: 1.25em; margin: 0 0 .3em; }
+.reveal .card p { margin: 0; }
+
+/* Clusters */
+.reveal .clusters { display: grid; grid-template-columns: 1fr 1fr; gap: 1em 2.4em; }
+.reveal .cluster { display: grid; grid-template-columns: 200px 1fr; gap: .8em; align-items: center; font-size: .9em; }
+.reveal .cluster img { width: 200px; height: 200px; }
+.reveal .cluster h3 { margin: 0 0 .2em; font-size: 1.3em; }
+.reveal .cluster p { margin: 0; }
+
+/* Numbers */
+.reveal .nums { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1em; text-align: center; }
+.reveal .nums div { background: var(--f-green-tint); border-radius: 18px; padding: .6em .3em; }
+.reveal .nums div:nth-child(even) { background: var(--f-red-tint); }
+.reveal .nums b { display: block; font-size: 2.2em; line-height: 1.05; }
+.reveal .nums span { font-size: .6em; display: block; margin-top: .3em; }
+
+/* Photographs */
+.reveal .slides section.photo { padding: 0; height: 1080px; top: 0 !important; }
+.reveal .fig.wide { width: 82%; height: auto; max-height: 82vh; }
+.reveal .caption-box { position: absolute; left: 0; bottom: 2%; background: rgba(255,255,255,.9); color: #231310; border-radius: 14px; padding: .45em .8em; max-width: 60%; }
+html.dark .reveal .caption-box { background: rgba(26,11,8,.88); color: #f6eeea; }
+.reveal .caption-box .kicker { color: inherit; opacity: .8; }
+.reveal .caption-box p { margin: 0; font-size: 1.1em; font-weight: 700; line-height: 1.2; }
+.reveal .caption-box img.icon { position: absolute; right: -90px; top: 50%; transform: translateY(-50%); width: 120px; height: 120px; }
+.reveal .grid-photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5em; }
+.reveal .grid-photos.two { grid-template-columns: repeat(2, 1fr); }
+.reveal .grid-photos figure { margin: 0; }
+.reveal .grid-photos img { width: 100%; height: 34vh; object-fit: cover; border-radius: 14px; display: block; }
+.reveal .grid-photos figcaption { font-size: .5em; margin-top: .25em; color: var(--f-ink-60); }
+
+/* Phases */
+.reveal .phases { display: grid; grid-template-columns: repeat(4, 1fr); gap: .6em; counter-reset: ph; }
+.reveal .phases div { background: var(--f-green-tint); border-radius: 18px; padding: .8em .8em; font-size: .82em; position: relative; }
+.reveal .phases div:nth-child(even) { background: var(--f-red-tint); }
+.reveal .phases h3 { font-size: 1.3em; margin: 0 0 .3em; }
+.reveal .phases p { margin: 0; }
+
+/* Lessons */
+.reveal ol.lessons { font-size: 1.05em; margin: 0; padding-left: 1.4em; columns: 2; column-gap: 2em; }
+.reveal ol.lessons li { margin: .25em 0; }
+.reveal ol.lessons li::marker { color: var(--f-red-text); font-weight: 700; }
+
+/* Two questions and the link between them */
+.reveal .link-questions { max-width: 26em; margin: 0 auto; }
+.reveal .link-questions p { font-size: 1.6em; font-weight: 700; line-height: 1.25; margin: 0; }
+.reveal .link-tag { display: inline-block; margin: .7em 0 .7em 4em; transform: rotate(-8deg);
+  background: var(--f-red); color: #fff; font-weight: 700; font-size: 1.1em; padding: .25em 1em; border-radius: .4em; }
+
+/* The ring of icons (slides from the RITMO deck) */
+.reveal .ring { position: relative; width: 100%; height: 960px; }
+.reveal .ring-icon { position: absolute; transform: translate(-50%, -50%); height: auto; }
+.reveal .ring-centre { position: absolute; left: 49.6%; top: 50%; transform: translate(-50%, -50%);
+  font-size: 1.6em; font-weight: 700; color: var(--f-red-text); text-align: center; line-height: 1.15; }
+.reveal .ring-centre.small { left: 43.9%; top: 46%; font-size: 1.05em; color: var(--f-ink); }
+.reveal .ring-label { position: absolute; transform: translate(-50%, -50%); font-size: .7em; font-weight: 700; color: var(--f-ink); white-space: nowrap; }
+.reveal .ring-mode { position: absolute; transform: translate(-50%, -50%); background: var(--f-green-tint); border: 2px solid var(--f-green);
+  border-radius: 18px; padding: .4em .8em; font-size: .62em; font-weight: 700; text-align: center; line-height: 1.2; }
+html.dark .reveal .ring-icon { background: #ffffff; border-radius: 50%; }
+
+/* Results, in the style of the annual reports' infographics */
+.reveal .results { display: grid; grid-template-columns: repeat(2, 1fr); gap: .55em 2.4em; margin-top: .3em; }
+.reveal .result { display: grid; grid-template-columns: 130px auto 1fr; align-items: center; gap: .45em; }
+.reveal .result img { width: 120px; height: 105px; object-fit: contain; }
+.reveal .result b { font-size: 2em; line-height: 1; }
+.reveal .result span { font-size: .72em; font-weight: 700; line-height: 1.1; }
+html.dark .reveal .result img { background: #fff; border-radius: 14px; padding: 6px; }
+
+.reveal .picto-cards .card { display: grid; grid-template-columns: 110px 1fr; gap: .6em; align-items: center; }
+.reveal .picto-cards .card img { width: 110px; height: 110px; }
+.reveal .conduct { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1em; text-align: center; margin-top: .6em; }
+.reveal .conduct img { width: 230px; height: 230px; }
+.reveal .conduct p { font-weight: 700; margin: .3em 0 0; }
+html.dark .reveal .conduct img, html.dark .reveal .picto-cards img, html.dark .reveal .cluster img { background: #fff; border-radius: 50%; padding: 8px; }
+
+/* The front slide fills the frame, so the logos sit in its corners */
+.reveal .slides section.front { height: 1080px; top: 0 !important; display: flex !important; align-items: center; }
+/* Logos on the front slide only */
+.reveal .front-logo { position: absolute; bottom: 30px; height: auto; }
+.reveal .front-logo.uio { left: 0; width: 300px; }
+.reveal .front-logo.rcn { right: 0; width: 340px; }
+html.dark .reveal .front-logo { background: #fff; border-radius: 12px; padding: 10px 16px; }
+
+.reveal img.banner { display: block; width: 1500px; max-width: 100%; height: auto; margin: 0 auto .7em; border-radius: 18px; }
+.reveal .statement.small { font-size: 1.25em; max-width: 30em; }
+
+.reveal .cluster.mirror { grid-template-columns: 1fr 200px; text-align: right; }
+
+/* The film under the opening slide */
+.reveal .video-frame { width: 1600px; height: 900px; margin: 0 auto; border-radius: 18px; overflow: hidden; background: #000; }
+.reveal .video-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+
+/* What we study */
+.reveal .themes-overview { grid-template-columns: 1fr 1fr; gap: .8em; }
+.reveal .themes-overview .card { display: grid; grid-template-columns: 220px 1fr; align-items: center; gap: .7em; padding: .9em 1.1em; }
+.reveal .themes-overview .card img { width: 210px; height: 210px; }
+.reveal .themes-overview .card h3 { font-size: 1.6em; margin: 0; }
+.reveal .theme-head { display: flex; align-items: center; gap: .6em; margin-bottom: .4em; }
+.reveal .theme-head img { width: 170px; height: 170px; }
+.reveal .theme-head h2 { margin: 0; }
+.reveal .themes { display: grid; grid-template-columns: 1fr 1fr; gap: .6em 1.2em; }
+.reveal .theme { background: var(--f-green-tint); border-radius: 18px; padding: .7em 1em; }
+.reveal .theme:nth-child(4n+2), .reveal .theme:nth-child(4n+3) { background: var(--f-red-tint); }
+.reveal .theme h3 { font-size: 1.25em; margin: 0 0 .2em; }
+.reveal .theme p { font-size: .88em; margin: 0; line-height: 1.3; }
+html.dark .reveal .themes-overview img, html.dark .reveal .theme-head img { background: #fff; border-radius: 50%; padding: 8px; }
+
+/* Where am I */
+#position { position: fixed; left: 26px; bottom: 16px; z-index: 30; font: 700 15px/1 "Helvetica Neue", Helvetica, Arial, sans-serif; letter-spacing: .12em; text-transform: uppercase; color: #8a7570; }
+#position .depth { font-weight: 400; margin-left: .4em; }
+body.on-photo #position { display: none; }
+.reveal .controls { color: var(--f-red); }
+.reveal .progress { color: var(--f-red); }
+@media print { #position { display: none; } }
+
+/* fourMs additions */
+.reveal .slides section.front { color: #fff; }
+.reveal .front-box { background: rgba(19,1,2,.72); border-radius: 22px; padding: 1em 1.4em; max-width: 1150px; }
+.reveal .wordmark { font-family: Georgia, "Times New Roman", serif; font-weight: 700; font-size: 5.4em; line-height: .9; margin: 0; color: #fff; letter-spacing: -.01em; }
+.reveal .wordmark-sub { font-family: Georgia, "Times New Roman", serif; font-weight: 700; font-size: 1.35em; color: var(--f-yellow); margin: .25em 0 .7em; }
+.reveal .front-box .tagline { color: #fff; font-weight: 400; font-size: .95em; }
+.reveal .front-box .presenter { color: #f6eeea; }
+.reveal .front-logo { background: #fff; border-radius: 12px; padding: 10px 16px; }
+.reveal .front-logo.ritmo { right: 0; width: 120px; padding: 10px; }
+.reveal .ms { display: grid; grid-template-columns: repeat(4, 1fr); gap: .8em; margin-top: .4em; }
+.reveal .ms div { border-radius: 18px; padding: .9em 1em; background: var(--f-green-tint); border-top: 14px solid var(--f-green); }
+.reveal .ms div:nth-child(2) { background: var(--f-red-tint); border-top-color: var(--f-red); }
+.reveal .ms div:nth-child(3) { background: var(--f-yellow-tint); border-top-color: var(--f-yellow); }
+.reveal .ms div:nth-child(4) { background: var(--f-red-tint); border-top-color: #33170E; }
+.reveal .ms h3 { font-family: Georgia, "Times New Roman", serif; font-size: 1.6em; margin: 0 0 .3em; }
+.reveal .ms p { margin: 0; font-size: .85em; }
+.reveal .card.yellow { background: var(--f-yellow-tint); }
+.reveal .card img.thumb { width: 100%; height: 30vh; object-fit: cover; border-radius: 12px; display: block; margin-bottom: .45em; }
+.reveal .bignum { font-size: 7em; font-weight: 700; line-height: 1; color: var(--f-red-text); margin: 0; }
+.reveal .bignum-sub { font-size: 1.3em; font-weight: 700; margin: .3em auto 0; max-width: 22em; }
+.reveal blockquote { width: auto; max-width: 22em; margin: 0 auto; box-shadow: none; background: none; border-left: 14px solid var(--f-green); padding: .2em 0 .2em .8em; font-size: 1.7em; font-weight: 700; line-height: 1.25; text-align: left; font-style: normal; }
+.reveal blockquote cite { display: block; font-size: .45em; font-weight: 400; color: var(--f-ink-60); margin-top: .7em; font-style: normal; }
+.reveal .tools { columns: 3; column-gap: 1.4em; font-size: .78em; margin: 0; padding-left: 1.1em; }
+.reveal .tools li { margin: .12em 0; }
+.reveal .tools li::marker { color: var(--f-red); }
+.reveal .equipment { columns: 2; column-gap: 1.6em; font-size: .78em; margin-top: .3em; }
+.reveal .equipment .grp { break-inside: avoid; background: var(--f-green-tint); border-radius: 14px; padding: .5em .8em; margin: 0 0 .6em; }
+.reveal .equipment .grp:nth-child(3n+2) { background: var(--f-red-tint); }
+.reveal .equipment .grp:nth-child(3n) { background: var(--f-yellow-tint); }
+.reveal .equipment h3 { font-size: 1.3em; margin: 0 0 .2em; }
+.reveal .equipment ul { margin: 0; padding-left: 1.1em; }
+.reveal .equipment li { margin: .1em 0; line-height: 1.25; }
+.reveal .ml-ring { position: relative; width: 1150px; height: 900px; margin: 0 auto; }
+.reveal .ml-ring::before { content: ""; position: absolute; left: 50%; top: 50%; width: 720px; height: 720px; transform: translate(-50%,-50%); border: 4px dashed var(--f-ink-15); border-radius: 50%; }
+.reveal .ml-hub { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 340px; height: 340px; border-radius: 50%; background: var(--f-red); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.3em; font-weight: 700; box-shadow: 0 0 0 40px var(--f-red-tint); }
+.reveal .ml-sat { position: absolute; transform: translate(-50%,-50%); width: 250px; height: 250px; border-radius: 50%; background: var(--f-green); color: #231310; display: flex; align-items: center; justify-content: center; text-align: center; font-size: .8em; font-weight: 700; line-height: 1.15; padding: 0 .5em; }
+.reveal .ml-sat:nth-of-type(3), .reveal .ml-sat:nth-of-type(5) { background: var(--f-yellow); }
+.reveal .disciplines { display: flex; flex-wrap: wrap; justify-content: center; gap: .45em .5em; max-width: 1700px; margin: .6em auto 0; }
+.reveal .disciplines span { background: var(--f-green-tint); border: 3px solid var(--f-green); border-radius: 999px; padding: .3em .9em; font-weight: 700; font-size: 1.2em; }
+.reveal .disciplines span:nth-child(3n+2) { background: var(--f-red-tint); border-color: var(--f-red); }
+.reveal .disciplines span:nth-child(3n) { background: var(--f-yellow-tint); border-color: var(--f-yellow); }
+</style>
+<script src="js/numbers.js"></script>
+</head>
+<body>
+<div id="position" aria-hidden="true"></div>
+<div class="reveal">
+<div class="slides">
+
+<!-- ================== Title ================== -->
+<section>
+  <section class="front" data-background-image="logo/fourms-swirl.jpg" data-background-size="cover" data-background-color="#130102">
+  <div class="front-box">
+  <p class="wordmark">fourMs</p>
+  <p class="wordmark-sub">Music, Mind, Motion, Machines</p>
+  <p class="tagline">A lab for artistic and scientific research on music, mind, motion and machines</p>
+  <p class="presenter"><span id="occasion"></span>University of Oslo · part of RITMO<br><b>fourms.uio.no</b></p>
+  </div>
+  <img class="front-logo uio" src="logo/uio-logo.svg" alt="University of Oslo">
+  <img class="front-logo ritmo" src="logo/ritmo-emblem.svg" alt="RITMO">
+  <aside class="notes">
+  The fourMs Lab, for Music, Mind, Motion and Machines, is a lab at the University of Oslo for artistic and scientific research on music, mind, motion and machines, and a national research infrastructure. It is owned by the Department of Musicology and is the central lab of RITMO, the Centre for Interdisciplinary Studies in Rhythm, Time and Motion.
+  The talk follows a few questions: why, what, how and who, then MusicLab and the standstill championship, teaching, history, and what comes next, under When?. Right moves on, down goes deeper.
+  </aside>
+  </section>
+
+  <section class="photo" data-background-image="images/photos/concert-in-lab.jpg" data-background-size="cover" data-background-position="center 45%">
+  <div class="caption-box"><p class="kicker">A concert in the lab</p><p>Musicians and audience, measured together</p></div>
+  <aside class="notes">The lab is a black box that can seat an audience of about <span data-num="audience"></span>. Here a string quartet plays a concert while motion, eye movements and sound are recorded, with the audience in the room.</aside>
+  </section>
+</section>
+
+<!-- ================== WHY ================== -->
+<section>
+  <section data-background-color="#B22309" class="divider on-dark">
+  <p class="q">Why?</p>
+  <p class="q-sub">Why a lab for music and motion?</p>
+  <aside class="notes">First question: why a music department needs a motion lab.</aside>
+  </section>
+
+  <section class="center">
+  <p class="statement">Music is not only sound. It is also <em>motion</em>.</p>
+  <aside class="notes">Music is made by bodies and experienced by bodies: the actions that produce sound, the gestures that accompany it, the motion of listeners and dancers. To study music, we need to measure that motion, and the physiology that goes with it, as precisely as we measure sound.</aside>
+  </section>
+
+  <section>
+  <p class="kicker">Four Ms</p>
+  <div class="ms">
+  <div><h3>Music</h3><p>Performance, listening and dance</p></div>
+  <div><h3>Mind</h3><p>Perception, cognition and experience</p></div>
+  <div><h3>Motion</h3><p>From the largest gestures to the smallest micromotion</p></div>
+  <div><h3>Machines</h3><p>Sensors, software and interactive systems</p></div>
+  </div>
+  <aside class="notes">The name says what the lab is for: music, mind, motion and machines. The lab started as a collaboration between musicology and informatics, and that collaboration grew into RITMO in 2017, when psychology joined. Today it is used for music-related body motion, performance and music psychology, and increasingly for linguistics, dance, sports and well-being.</aside>
+  </section>
+
+  <section class="photo" data-background-image="images/photos/dancing-in-lab.gif" data-background-size="cover" data-background-position="center 55%">
+  <div class="caption-box"><p class="kicker">Music is motion</p><p>Two dancers, captured as they move</p></div>
+  <aside class="notes">Two dancers in motion capture suits in the lab. Every marker is tracked by the cameras around them, so that the motion can be studied in detail afterwards, together with the music.</aside>
+  </section>
+
+  <section>
+  <p class="statement small">A lab for artistic and scientific research on music, mind, motion and machines</p>
+  <div class="cols4" style="margin-top:1em">
+  <div class="card"><h3>Measure</h3><p>Motion, physiology, eyes and sound, in sync</p></div>
+  <div class="card red"><h3>Perform</h3><p>A black box for concerts, dance and artistic research</p></div>
+  <div class="card yellow"><h3>Immerse</h3><p>Spatial audio, VR and multimedia</p></div>
+  <div class="card"><h3>Build</h3><p>Sensors, software and interactive systems</p></div>
+  </div>
+  <aside class="notes">The lab's web pages call it a world-class research infrastructure for studies of human body movement and physiology in an immersive multimedia environment. That is true but too narrow. The lab is as much a place for artistic research and performance, for spatial audio with a 24-channel loudspeaker rig and wavefield synthesis, for VR and interactive systems, as for measuring bodies. It spans, in the words of its 2022 description, from the arts and humanities to the social and natural sciences. It is a national research infrastructure recognised by the Research Council of Norway since <span data-num="founded"></span>, a UiO:Life Science core facility, and open to external users, who can rent it.</aside>
+  </section>
+</section>
+
+<!-- ================== WHAT ================== -->
+<section>
+  <section data-background-color="#9FD54F" class="divider">
+  <p class="q">What?</p>
+  <p class="q-sub">What is in the lab?</p>
+  <aside class="notes">Second question: the rooms and the equipment.</aside>
+  </section>
+
+  <section>
+  <p class="kicker">Rooms built for recording</p>
+  <div class="cols" style="grid-template-columns:1fr 1.2fr">
+  <div class="cols top" style="grid-template-columns:1fr;gap:.5em">
+  <div class="card"><h3>The black box</h3><p>A flexible main lab, seating an audience of about <span data-num="audience"></span></p></div>
+  <div class="card red"><h3>The control room</h3><p>Recording and processing, patched to the lab</p></div>
+  <div class="card yellow"><h3>Quiet by design</h3><p>A sound-proof entrance and quiet ventilation</p></div>
+  </div>
+  <img class="fig" src="images/photos/control-room.jpg" alt="The control room: screens showing the lab, a mixer and a researcher at work" style="border-radius:18px;max-height:70vh">
+  </div>
+  <aside class="notes">The lab moved into custom-built rooms in Harald Schjelderups hus at Blindern in 2018: a sound-proof entrance, a separate control room with space for processing, a flexible black-box main lab and storage. A large audio, video and control patch connects the lab and the control room. The lab is next door to the cognitive labs of the Department of Psychology.</aside>
+  </section>
+
+  <section class="photo" data-background-image="images/photos/analysis-screens.jpg" data-background-size="cover" data-background-position="center 40%">
+  <div class="caption-box"><p class="kicker">Synchronised</p><p>Motion capture, eye tracking, sound and video in one recording</p></div>
+  <aside class="notes">The strength of the lab is that everything can be recorded together and in sync: optical motion capture, eye tracking, physiology, multichannel audio and video. Here the recording is followed live on the screens of the control room.</aside>
+  </section>
+
+  <section>
+  <p class="kicker">A flexible black box</p>
+  <div class="grid-photos two">
+  <figure><img src="images/photos/piano-cameras.jpg" alt="A pianist in the lab surrounded by video cameras on tripods" style="height:70vh"></figure>
+  <figure><img src="images/photos/violin-voice.jpg" alt="A violinist and a singer performing together in the lab" style="height:70vh"></figure>
+  </div>
+  <aside class="notes">The black box is rebuilt for each study: a forest of cameras around a pianist one day, a violinist and a singer the next.</aside>
+  </section>
+
+  <section>
+  <p class="kicker">Equipment</p>
+  <div class="cols4">
+  <div class="card"><img class="thumb" src="images/photos/camera-ring.jpg" alt="An infrared motion capture camera"><h3>Motion</h3><p>Optical and inertial motion capture, up to <span data-num="mocap-hz"></span> Hz</p></div>
+  <div class="card red"><img class="thumb" src="images/photos/emg.jpg" alt="Muscle sensors on an arm"><h3>Physiology</h3><p>Muscle activity, heart and breathing</p></div>
+  <div class="card yellow"><img class="thumb" src="images/photos/quartet-mocap.jpg" alt="A violinist with eye-tracking glasses" style="object-position:20% 30%"><h3>Eyes</h3><p>Eye tracking and pupillometry</p></div>
+  <div class="card"><img class="thumb" src="images/photos/control-room.jpg" alt="The control room" style="object-position:70% 50%"><h3>Sound and video</h3><p><span data-num="audio-channels"></span> audio channels, <span data-num="speakers"></span> loudspeakers</p></div>
+  </div>
+  <aside class="notes">Optical and inertial motion capture with sub-millimetre precision, up to <span data-num="mocap-hz"></span> frames per second; sensors for muscle activity, heart rate and breathing; eye trackers for pupillometry; and audio and video: <span data-num="audio-channels"></span>-channel audio recording, a <span data-num="speakers"></span>-loudspeaker array, video, lighting and instruments. Data can be exported in standard formats such as C3D, CSV and BVH.</aside>
+  </section>
+
+  <section>
+  <p class="kicker">In the lab</p>
+  <div class="equipment" data-equipment="lab"></div>
+  <aside class="notes">The fixed installation in the lab, as listed on the lab's web pages: optical, inertial and magnetic motion capture, biosignal sensors, a multichannel loudspeaker rig and a wavefield synthesis array, and a set of new keyboard instruments.</aside>
+  </section>
+
+  <section>
+  <p class="kicker">Portable</p>
+  <div class="equipment" data-equipment="portable"></div>
+  <aside class="notes">The portable equipment can be used in the lab or taken out: a second motion capture system and suits, <span data-num="eye-trackers"></span> eye trackers, wearable sensors for whole groups, video and lighting, and sound recording.</aside>
+  </section>
+
+  <section>
+  <p class="kicker">The details</p>
+  <div class="grid-photos">
+  <figure><img src="images/photos/cameras.jpg" alt="Motion capture cameras on the ceiling truss" style="height:62vh"></figure>
+  <figure><img src="images/photos/markers.jpg" alt="Boxes of reflective markers" style="height:62vh"></figure>
+  <figure><img src="images/photos/mocap-suit.jpg" alt="A participant in a motion capture suit in front of a screen with the skeleton model" style="height:62vh"></figure>
+  </div>
+  <aside class="notes">Infrared cameras on the truss, reflective markers by the hundred, and a suit with markers that the software turns into a moving skeleton in real time.</aside>
+  </section>
+
+  <section>
+  <p class="kicker">Out of the lab</p>
+  <div class="cols3" style="margin-top:.4em">
+  <div class="card"><h3>Portable</h3><p>Wireless sensors for whole groups: <span data-num="equivital"></span> Equivital and <span data-num="movesense"></span> Movesense</p></div>
+  <div class="card red"><h3>Secure</h3><p>Secure storage and remote desktops for analysis</p></div>
+  <div class="card yellow"><h3>Mobile</h3><p>Cameras, eye trackers and recorders for the field</p></div>
+  </div>
+  <aside class="notes">Much of the equipment travels. With wireless sensors for whole groups, the lab can go to concert halls, schools and festivals and record musicians and audiences where the music happens; MusicLab relies mainly on this mobile equipment. The data go to secure university storage and can be analysed on GPU-accelerated remote desktops.</aside>
+  </section>
+
+  <section class="photo" data-background-image="images/photos/concert-stavanger.jpg" data-background-size="cover" data-background-position="center 60%">
+  <div class="caption-box"><p class="kicker">Stavanger, 2023</p><p>A symphony orchestra and its audiences, measured in the concert hall</p></div>
+  <aside class="notes">The largest concert experiment so far: in February 2023, with Stavanger Symphony Orchestra, data were collected from the musicians, the conductor and the audiences during five public concerts.</aside>
+  </section>
+</section>
+
+<!-- ================== HOW ================== -->
+<section>
+  <section data-background-color="#F2DF30" class="divider">
+  <p class="q">How?</p>
+  <p class="q-sub">How do we work?</p>
+  <aside class="notes">Third question: how a study goes through the lab.</aside>
+  </section>
+
+  <section>
+  <p class="kicker">From idea to open data</p>
+  <div class="phases" style="margin-top:.4em">
+  <div class="fragment"><h3>Plan</h3><p>Design the study with the lab engineer</p></div>
+  <div class="fragment"><h3>Record</h3><p>Everything in sync, in the lab or in the field</p></div>
+  <div class="fragment"><h3>Analyse</h3><p>With open software, much of it made here</p></div>
+  <div class="fragment"><h3>Share</h3><p>Open formats, open data where possible</p></div>
+  </div>
+  <aside class="notes">A study goes from planning, together with the lab engineer, through recording and analysis to sharing. The lab has had a full-time engineer since 2019, and all active users meet once a month to coordinate.</aside>
+  </section>
+
+  <section class="photo" data-background-image="images/photos/preparing.jpg" data-background-size="cover" data-background-position="center 35%">
+  <div class="caption-box"><p class="kicker">Before the recording</p><p>Every session starts with preparation</p></div>
+  <aside class="notes">Most of the work happens before anyone presses record: calibrating cameras, preparing suits, markers and sensors, and testing the synchronisation.</aside>
+  </section>
+
+  <section>
+  <p class="kicker">Software, open source</p>
+  <img class="fig" src="images/photos/motion-history.png" alt="Motion history images of a dancer: the trajectories of the arms traced in colour" style="max-height:44vh;border-radius:14px;margin-bottom:.5em">
+  <ul class="tools">
+  <li>Musical Gestures Toolbox</li><li>VideoAnalysis</li><li>AudioVideoAnalysis</li><li>Mocapgrams</li><li>MoCap Synthesiser</li><li>IIR MoCap Filters</li><li>Kinectofon</li><li>ImageSonifyer</li><li>MusicLab App</li>
+  </ul>
+  <aside class="notes">The lab develops its own tools and publishes them as open source with permissive licences. The best known is the Musical Gestures Toolbox, for visualising and analysing motion in video, available for Python. The image shows motion history images: the trajectories of a dancer's arms traced over time.</aside>
+  </section>
+
+  <section>
+  <p class="kicker">The lab handbook</p>
+  <div class="cols4">
+  <div class="card"><img class="thumb" src="images/photos/handbook-infrastructure.jpg" alt="The lab with a participant in a motion capture suit"><h3>Infrastructure</h3><p>Rooms and equipment</p></div>
+  <div class="card red"><img class="thumb" src="images/photos/handbook-e-infrastructure.jpg" alt="An abstract image of data"><h3>e-Infrastructure</h3><p>Storage and processing</p></div>
+  <div class="card yellow"><img class="thumb" src="images/photos/handbook-database.jpg" alt="An illustration of a database"><h3>Database</h3><p>Finding and reusing data</p></div>
+  <div class="card"><img class="thumb" src="images/photos/handbook-software.png" alt="Documentation of the Musical Gestures Toolbox" style="object-position:left top"><h3>Software</h3><p>Tools and documentation</p></div>
+  </div>
+  <aside class="notes">The handbook is the lab's shared memory and is open online. It is organised in four parts: the physical infrastructure, the e-infrastructure for storing and processing data, the database of recordings, and the software with its documentation.</aside>
+  </section>
+
+  <section>
+  <p class="kicker">Open research</p>
+  <div class="cols3" style="margin-top:.4em">
+  <div class="card"><h3>An open handbook</h3><p>How the lab works, online for everyone</p></div>
+  <div class="card red"><h3>Open formats</h3><p>Good enough practice, from recording to archive</p></div>
+  <div class="card yellow"><h3>Open data</h3><p>Shared where privacy and copyright allow</p></div>
+  </div>
+  <aside class="notes">The lab handbook is open online. Data are moved to open formats, following a "good enough practice" approach rather than waiting for perfection, and openly licensed where possible. The barriers are real: privacy, because bodies and faces identify people, and copyright, because music is protected. The lab also publishes methods papers comparing motion capture systems.</aside>
+  </section>
+</section>
+
+<!-- ================== WHO ================== -->
+<section>
+  <section data-background-color="#33170E" class="divider on-dark">
+  <p class="q">Who?</p>
+  <p class="q-sub">Who uses the lab?</p>
+  <aside class="notes">Fourth question: the users.</aside>
+  </section>
+
+  <section>
+  <p class="kicker">Users from many disciplines</p>
+  <div class="disciplines">
+  <span>Musicology</span><span>Music technology</span><span>Dance</span><span>Opera and theatre</span>
+  <span>Psychology</span><span>Neuroscience</span><span>Informatics</span><span>Robotics</span>
+  <span>Linguistics</span><span>Philosophy</span><span>Media studies</span><span>Education</span>
+  <span>Physiotherapy</span><span>Sports</span><span>Life science</span><span>Medicine</span>
+  </div>
+  <p class="muted" style="text-align:center;margin-top:.8em">From universities, the cultural sector and industry</p>
+  <aside class="notes">The core is music cognition and music technology, but the lab is used across the board: dance, opera and theatre in the performing arts; psychology and neuroscience, together with FRONT Neurolab; informatics and robotics; gestures in linguistics, affect and absorption in philosophy, media studies, and the sharing of classroom video with teacher education; physiotherapy, where video analysis developed for dancers became part of a tool for screening preterm infants; sports, with Olympiatoppen; and life science and medicine, with cell biologists studying how sound affects stem cells. Most users come from universities, some from the public cultural sector and from industry. The list is from the lab's descriptions of itself to the Research Council in 2020 and 2022.</aside>
+  </section>
+
+  <section>
+  <p class="kicker">Users in a year, as of 2020</p>
+  <div class="nums" style="margin-top:.6em">
+  <div><b data-num="users-internal"></b><span>internal users</span></div>
+  <div><b data-num="users-external"></b><span>external users</span></div>
+  <div><b><i data-num="users-international-pct" style="font-style:normal"></i>%</b><span>from abroad</span></div>
+  <div><b data-num="user-countries"></b><span>countries</span></div>
+  </div>
+  <aside class="notes">In 2020, the lab had about <span data-num="users-internal"></span> internal and <span data-num="users-external"></span> external users a year, about half of them from abroad, from <span data-num="user-countries"></span> countries. About half of the lab time went to RITMO's projects and half to other users.</aside>
+  </section>
+
+  <section>
+  <p class="kicker">Research themes</p>
+  <div class="themes">
+  <div class="theme"><h3>Moving to music</h3><p>Air instruments, sound-tracing, dance, entrainment and pulse</p></div>
+  <div class="theme"><h3>Performers</h3><p>Posture, fluency and coordination in ensembles</p></div>
+  <div class="theme"><h3>Standing still</h3><p>Micromotion, the smallest motion we can produce</p></div>
+  <div class="theme"><h3>Dance</h3><p>Motion, meaning and narrative</p></div>
+  <div class="theme"><h3>Robots</h3><p>Robots and people that predict each other</p></div>
+  <div class="theme"><h3>Brains and eyes</h3><p>EEG and eye tracking with motion</p></div>
+  </div>
+  <aside class="notes">The research ranges from spontaneous motion to music, such as air instruments, sound-tracing and dance, to the posture and fluency of performers, micromotion during standstill, narrative dance, robotics and human–robot interaction, and neuroscience with EEG and eye tracking. The lab page lists <span data-num="projects-active"></span> active projects and <span data-num="projects-completed"></span> completed ones since 2004.</aside>
+  </section>
+
+  <section class="photo" data-background-image="images/photos/rowing.jpg" data-background-size="cover" data-background-position="center 40%">
+  <div class="caption-box"><p class="kicker">Sports</p><p>An athlete on a rowing machine, with sensors and eye tracking</p></div>
+  <aside class="notes">The methods travel beyond music. Here an athlete rows in the lab with motion capture, sensors and eye tracking; the lab has also worked with Olympiatoppen on sonification for training.</aside>
+  </section>
+
+  <section class="photo" data-background-image="images/photos/guitars.jpg" data-background-size="cover" data-background-position="center 50%">
+  <div class="caption-box"><p class="kicker">Machines</p><p>Self-playing guitars</p></div>
+  <aside class="notes">Machines are the fourth M: robots, interactive systems and instruments that play themselves, like these self-playing guitars made for a public science event.</aside>
+  </section>
+
+  <section class="photo" data-background-image="images/photos/open-lab.jpg" data-background-size="cover" data-background-position="center 50%">
+  <div class="caption-box"><p class="kicker">An open lab</p><p>Musicologists, psychologists, informaticians and many more</p></div>
+  <aside class="notes">The users come from musicology, psychology and informatics, and also from linguistics, physiotherapy, dance and sports.</aside>
+  </section>
+
+  <section>
+  <p class="kicker">Partners</p>
+  <div class="cols3" style="margin-top:.4em">
+  <div class="card"><h3>Sister labs</h3><p>Ghent, Hamburg, Genova and Jyväskylä</p></div>
+  <div class="card red"><h3>NordicSMC</h3><p>Sound and music computing in the Nordic countries</p></div>
+  <div class="card yellow"><h3>RITPART</h3><p>McGill, UC Berkeley and Toyohashi</p></div>
+  </div>
+  <aside class="notes">The lab works closely with similar labs in Ghent, Hamburg, Genova and Jyväskylä, with the Nordic Sound and Music Computing network, and with RITMO's international partners at McGill, UC Berkeley and Toyohashi.</aside>
+  </section>
+</section>
+
+<!-- ================== MUSICLAB ================== -->
+<section>
+  <section data-background-color="#B22309" class="divider on-dark">
+  <p class="q">MusicLab</p>
+  <p class="q-sub">Open research in real venues · musiclab.uio.no</p>
+  <aside class="notes">MusicLab: concerts as research events, out where the music happens.</aside>
+  </section>
+
+  <section>
+  <p class="kicker">Not a lab, but a project</p>
+  <div class="cols3" style="margin-top:.4em">
+  <div class="card"><h3>A partnership</h3><p>An open research innovation project between RITMO and the University Library</p></div>
+  <div class="card red"><h3>Mobile equipment</h3><p>Sensors, cameras and recorders from the fourMs Lab</p></div>
+  <div class="card yellow"><h3>Real venues</h3><p>Concert halls, clubs, libraries and festivals</p></div>
+  </div>
+  <aside class="notes">Despite the name, MusicLab is not a physical lab. It is an open research innovation project between RITMO and the University Library. It uses resources from the fourMs Lab, primarily the mobile equipment, which goes out to real venues: concert halls, clubs, libraries and festivals, where the audience is part of the event. Everything about it is on musiclab.uio.no.</aside>
+  </section>
+
+  <section class="center">
+  <p class="statement small">A concert, data collection and a conversation with the audience, in one event</p>
+  <p class="muted" style="margin-top:1em">Always free and open to everyone, and always streamed</p>
+  <aside class="notes">MusicLab is an open research innovation project between RITMO and the University Library, exploring new ways to collect and communicate music-related research data. Each event combines a concert, a data collection and a conversation with the audience, often with "data jockeys" analysing the data live on stage. In the project's own words, MusicLab is always free and open to everyone, and all events are streamed.</aside>
+  </section>
+
+  <section>
+  <p class="kicker">One event, five parts</p>
+  <div class="ml-ring">
+  <div class="ml-hub">Concert</div>
+  <div class="ml-sat" style="left:50%;top:9%">Workshop</div>
+  <div class="ml-sat" style="left:84%;top:50%">Panel discussion</div>
+  <div class="ml-sat" style="left:50%;top:91%">Data collection</div>
+  <div class="ml-sat" style="left:16%;top:50%">Data jockeying</div>
+  </div>
+  <aside class="notes">Every MusicLab is built around a concert, with four other parts around it: a workshop, data collection during the concert, data jockeying, where researchers analyse the fresh data live on stage, and a panel discussion with the musicians and researchers. The audience sees the whole research process, from data collection to the first results.</aside>
+  </section>
+
+  <section>
+  <p class="kicker">MusicLab in practice</p>
+  <div class="grid-photos two">
+  <figure><img src="images/photos/musiclab-concert.jpg" alt="An audience at a MusicLab event in a café venue" style="height:33vh"></figure>
+  <figure><img src="images/photos/musiclab-workshop.jpg" alt="Participants with laptops at a MusicLab workshop" style="height:33vh"></figure>
+  <figure><img src="images/photos/musiclab-data-jockey.jpg" alt="A researcher analysing data live, with code projected on a screen" style="height:33vh"></figure>
+  <figure><img src="images/photos/musiclab-panel.jpg" alt="A panel discussion on stage" style="height:33vh"></figure>
+  </div>
+  <aside class="notes">The concert, the workshop, data jockeying with the code on the big screen, and the panel discussion.</aside>
+  </section>
+
+  <section class="center">
+  <p class="bignum" data-num="musiclab"></p>
+  <p class="bignum-sub">MusicLab events since 2017</p>
+  <aside class="notes">From the pilot in November 2017, with biophysical music, through Breath, Rhythm and Utopia, a livestreamed lockdown rave and human–machine improvisation, to the Danish String Quartet in Copenhagen in 2021 and the Norwegian Radio Orchestra in 2024. The count is from the list of events in RITMO's final report.</aside>
+  </section>
+
+  
+  <section class="photo" data-background-image="images/photos/musiclab-copenhagen.jpg" data-background-size="cover" data-background-position="center 40%">
+  <div class="caption-box"><p class="kicker">MusicLab Copenhagen, 2021</p><p>The Danish String Quartet, with markers and sensors</p></div>
+  <aside class="notes">In October 2021, a large team from RITMO went to Copenhagen for MusicLab Copenhagen with the Danish String Quartet. The data from the musicians and the audience led to a special collection of articles in the journal Music &amp; Science.</aside>
+  </section>
+
+  <section class="photo" data-background-image="images/photos/kork-violinist.jpg" data-background-size="cover" data-background-position="center 35%">
+  <div class="caption-box"><p class="kicker">Abels KORK, 2024</p><p>With the Norwegian Radio Orchestra</p></div>
+  <aside class="notes">In June 2024, MusicLab went to the Norwegian Radio Orchestra together with the radio show Abels tårn: breathing, pulse and motion were measured, survey data collected from everyone present, and musicians and audience members interviewed.</aside>
+  </section>
+
+  <section class="photo" data-background-image="images/photos/kork-recording.jpg" data-background-size="cover" data-background-position="center 40%">
+  <div class="caption-box"><p class="kicker">Behind the scenes</p><p>Recording the orchestra</p></div>
+  <aside class="notes">Cameras, microphones and sensors among the musicians: a concert hall turned into a lab for a day.</aside>
+  </section>
+</section>
+
+<!-- ================== STANDSTILL ================== -->
+<section>
+  <section data-background-color="#9FD54F" class="divider">
+  <p class="q">Standstill</p>
+  <p class="q-sub">The Norwegian Championship of Standstill</p>
+  <aside class="notes">Of everything RITMO did, this is what reached the media most often.</aside>
+  </section>
+
+  <section class="center">
+  <p class="statement">How still can you <em>stand</em>?</p>
+  <aside class="notes">Even when we try to stand completely still, we move: we breathe, our heart beats, we sway to keep our balance. The Norwegian Championship of Standstill asked people to stand as still as they could while their motion was measured with motion capture, in silence and with music. Music makes it harder: we move involuntarily, even when we try not to, and how much depends on the music.</aside>
+  </section>
+
+  <section>
+  <p class="kicker">The championship</p>
+  <div class="grid-photos two">
+  <figure><img src="images/photos/standstill-championship.jpg" alt="Participants standing still in rows on the lab floor, each on a marked spot" style="height:66vh"></figure>
+  <figure><img src="images/photos/standstill-championship-2.jpg" alt="Participants standing still in the lab while researchers watch" style="height:66vh"></figure>
+  </div>
+  <aside class="notes">The championship was held every year with hundreds of participants. It was both a way of collecting data on micromotion and a way of reaching the public, and it was covered by NRK's evening news in 2015.</aside>
+  </section>
+
+  <section class="center">
+  <img src="images/photos/standstill-database.png" alt="Oslo Standstill Database: six standing figures in different colours" style="max-height:34vh;display:block;margin:0 auto .3em">
+  <p class="bignum" data-num="standstill-recordings"></p>
+  <p class="bignum-sub">recordings of people standing still, in <span data-num="standstill-collections"></span> collections from <span data-num="standstill-first-year"></span> to <span data-num="standstill-last-year"></span>, in the open Oslo Standstill Database</p>
+  <aside class="notes">The Oslo Standstill Database gathers motion capture recordings of people trying to stand still, in silence and with music: <span data-num="standstill-recordings"></span> recordings in <span data-num="standstill-collections"></span> collections, <span data-num="standstill-championship"></span> of them from the championships, from an artistic project in <span data-num="standstill-first-year"></span> to recordings in <span data-num="standstill-last-year"></span>. The collections are published openly, each with its own DOI, and they are the data behind the book Still Standing.</aside>
+  </section>
+
+  <section class="photo" data-background-image="images/photos/sverm-standstill.jpg" data-background-size="cover" data-background-position="center 30%">
+  <div class="caption-box"><p class="kicker">Sverm, 2012</p><p>Standstill as performance</p></div>
+  <aside class="notes">The research on standstill has also become art. In the artistic research project Sverm, standing still and micromotion were explored on stage.</aside>
+  </section>
+</section>
+
+<!-- ================== LEARN ================== -->
+<section>
+  <section data-background-color="#F2DF30" class="divider">
+  <p class="q">Learn?</p>
+  <p class="q-sub">Where can you learn the methods?</p>
+  <aside class="notes">Fifth question: teaching.</aside>
+  </section>
+
+  <section>
+  <p class="kicker">Teaching</p>
+  <div class="cols3" style="margin-top:.4em">
+  <div class="card"><h3>Online</h3><p>Free courses: Music Moves, Motion Capture and Pupillometry</p></div>
+  <div class="card red"><h3>On campus</h3><p>Motion capture at bachelor, master and PhD level</p></div>
+  <div class="card yellow"><h3>Workshops</h3><p>Winter schools, micro courses and international workshops</p></div>
+  </div>
+  <div class="grid-photos" style="margin-top:.7em">
+  <figure><img src="images/photos/mooc-motion-capture.jpg" alt="The banner of the online course Motion Capture: the art of studying complex human activity" style="height:38vh"></figure>
+  <figure><img src="images/photos/winter-school.jpg" alt="Participants at a winter school gathered around the control room screens" style="height:38vh"></figure>
+  <figure><img src="images/photos/piano-course.jpg" alt="A pianist with motion capture markers in a course" style="height:38vh"></figure>
+  </div>
+  <aside class="notes">The online course Music Moves had reached more than <span data-num="mooc-learners"></span> learners by 2020, and was followed by courses on motion capture and pupillometry. On campus, motion capture is taught from bachelor to PhD level, and short micro courses cover tools such as the Musical Gestures Toolbox, EEG and eye tracking. The lab has hosted the NordicSMC Winter School and international workshops on motion capture and on music and AI.</aside>
+  </section>
+</section>
+
+<!-- ================== WHEN ================== -->
+<section>
+  <section data-background-color="#33170E" class="divider on-dark">
+  <p class="q">When?</p>
+  <p class="q-sub">From Musical Gestures in 2004 to HumanLab in 2027</p>
+  <aside class="notes">Sixth question: how the lab came to be.</aside>
+  </section>
+
+  <section>
+  <img class="fig wide" src="images/timeline.png" alt="Timeline: 2004 Musical Gestures project, 2006 the first lab, 2008 the name fourMs and national infrastructure, 2011 a black box, 2017 the collaboration grows into RITMO, the first MusicLab, 2018 the new lab, 2019 a full-time engineer and UiO:Life Science core facility, 2022 the fourMs Lab Upgrade, 2026 HumSam core facility, 2027 HumanLab (planned)" style="width:96%">
+  <aside class="notes">The work began with the Musical Gestures project in 2004, with the first recordings in a borrowed video studio, and the first dedicated lab followed in 2006. In 2008, the Sensing Music-related Actions project made it a collaboration between musicology and informatics; the lab got its name and its first motion capture systems, and became a national infrastructure, recognised by the Research Council of Norway. That collaboration grew into RITMO in 2017, and since 2018 the lab has been in custom-built rooms as RITMO's central lab. The fourMs Lab Upgrade brought infrastructure funding from the Research Council from 2022 to 2031, and in 2026 the lab became a HumSam core facility at UiO.</aside>
+  </section>
+
+  <section>
+  <p class="kicker">Three labs ago</p>
+  <div class="grid-photos">
+  <figure><img src="images/photos/history-2005.png" alt="An early recording with a blue screen and old computers" style="height:52vh"><figcaption>2004</figcaption></figure>
+  <figure><img src="images/photos/history-2008.jpg" alt="An early lab with a loudspeaker truss and a fourMs banner" style="height:52vh"><figcaption>2008</figcaption></figure>
+  <figure><img src="images/photos/history-2011.jpg" alt="An earlier black box with motion capture cameras and a participant" style="height:52vh"><figcaption>2011</figcaption></figure>
+  </div>
+  <aside class="notes">From a borrowed blue-screen studio, through a lab with a loudspeaker truss, to a converted seminar room painted black: each move brought more space and better equipment.</aside>
+  </section>
+  <section class="center">
+  <p class="kicker">HumanLab, summer 2027</p>
+  <p class="statement small">A new laboratory at the University of Oslo, run by musicology and linguistics together</p>
+  <aside class="notes">From the summer of 2027, the fourMs Lab becomes part of HumanLab, a new laboratory at the University of Oslo run jointly by the Department of Musicology and the Department of Linguistics and Scandinavian Studies. The fourMs Lab continues there as a national research infrastructure. It brings the fourMs Lab together with the linguists' socio-cognitive laboratory, so that sound, body and mind can be measured together, from motion capture and physiology to brain activity and eye tracking.</aside>
+  </section>
+  <section>
+  <p class="kicker">Connected</p>
+  <div class="cols3" style="margin-top:.4em">
+  <div class="card"><h3>RITMO</h3><p>Centre of Excellence for rhythm, time and motion, 2017–2027, grown out of the fourMs collaboration.</p></div>
+  <div class="card yellow"><h3>HumanLab</h3><p>From 2027, the lab's new home, with linguistics. fourMs continues there as a national infrastructure.</p></div>
+  <div class="card red"><h3>MishMash</h3><p>Centre for AI and Creativity, 2025–2030, hosted by the University of Oslo.</p></div>
+  </div>
+  <aside class="notes">The lab is older than the centres that use it, and it will outlive them. It began with the Musical Gestures project in 2004 and became a national infrastructure in 2008. The collaboration in the lab grew into RITMO, a Centre of Excellence for rhythm, time and motion from 2017, with the lab as its central facility. MishMash, the national Centre for AI and Creativity from 2025, builds on the same environment. And from 2027, the lab continues as a national infrastructure within HumanLab, owned by the Department of Musicology and the Department of Linguistics and Scandinavian Studies, so that it no longer depends on a single centre.</aside>
+  </section>
+</section>
+
+<!-- ================== CLOSE ================== -->
+<section>
+  <section class="front" data-background-image="logo/fourms-swirl.jpg" data-background-size="cover" data-background-color="#130102">
+  <div class="front-box">
+  <p class="wordmark" style="font-size:4em">fourMs</p>
+  <p class="wordmark-sub">Music, Mind, Motion, Machines</p>
+  <p class="presenter" style="font-size:1.1em"><b>fourms.uio.no</b><br>musiclab.uio.no</p>
+  </div>
+  <aside class="notes">Questions.</aside>
+  </section>
+
+  <section>
+  <p class="kicker">How this deck was made</p>
+  <div class="cols top" style="font-size:.78em">
+  <div>
+  <p>The content comes from the lab's public web pages, RITMO's annual reports and final report, and an earlier description of the lab. The numbers come from a table of sourced facts, through a script.</p>
+  <p>An AI agent drafted the slides, figures and notes; the presenter selected and corrected them.</p>
+  </div>
+  <div>
+  <p class="muted">Responsibility for what is on the screen is the presenter's.</p>
+  <p class="muted">Built with reveal.js</p>
+  </div>
+  </div>
+  <aside class="notes">Full disclosure about how the deck was made. The repository holds the scripts and the table of facts, each with its source.</aside>
+  </section>
+</section>
+
+</div>
+</div>
+
+<script src="lib/reveal/reveal.js"></script>
+<script src="lib/reveal-plugin/notes/notes.js"></script>
+<script>
+(function () {
+  var params = new URLSearchParams(location.search);
+
+  /* ---- Numbers ----------------------------------------------------
+     Every [data-num] element is filled from js/numbers.js, which
+     tools/make_numbers.py generates. Large numbers get a thin space.
+  --------------------------------------------------------------------*/
+  var N = window.FOURMS_NUMBERS || {};
+  document.querySelectorAll('[data-num]').forEach(function (el) {
+    var v = N[el.getAttribute('data-num')];
+    if (v === undefined) return;
+    el.textContent = (typeof v === 'number' && v >= 10000)
+      ? String(v).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') : String(v);
+  });
+
+  /* ---- Equipment lists, from js/numbers.js ---------------------------*/
+  var EQ = window.FOURMS_EQUIPMENT || {};
+  document.querySelectorAll('[data-equipment]').forEach(function (box) {
+    var groups = EQ[box.getAttribute('data-equipment')] || {};
+    Object.keys(groups).forEach(function (g) {
+      var d = document.createElement('div'); d.className = 'grp';
+      var h = document.createElement('h3'); h.textContent = g; d.appendChild(h);
+      var ul = document.createElement('ul');
+      groups[g].forEach(function (it) { var li = document.createElement('li'); li.textContent = it; ul.appendChild(li); });
+      d.appendChild(ul); box.appendChild(d);
+    });
+  });
+
+  /* ---- ?venue=…&date=… ---------------------------------------------
+     Adds the occasion to the title slide.
+  --------------------------------------------------------------------*/
+  var venue = params.get('venue'), date = params.get('date');
+  if (venue || date) {
+    document.getElementById('occasion').innerHTML =
+      [venue, date].filter(Boolean).join(' · ') + '<br>';
+  }
+
+  /* Each question's divider gives its stack an accent colour. */
+  document.querySelectorAll('.reveal .slides > section').forEach(function (s) {
+    var d = s.querySelector(':scope > section[data-background-color]');
+    if (d) s.style.setProperty('--slide-colour', d.getAttribute('data-background-color'));
+  });
+
+  /* ---- Where am I ----------------------------------------------------
+     "WHAT? 2/9" is the second of nine slides under What?.
+  --------------------------------------------------------------------*/
+  var readout = document.getElementById('position');
+  function showPosition() {
+    var at = Reveal.getIndices();
+    var stack = document.querySelectorAll('.reveal .slides > section')[at.h];
+    var slide = Reveal.getCurrentSlide();
+    document.body.classList.toggle('on-photo', !!(slide && slide.hasAttribute('data-background-image')));
+    if (!stack) return;
+    var q = stack.querySelector('.q');
+    var depth = stack.querySelectorAll(':scope > section').length;
+    if (!q || !depth) { readout.textContent = ''; return; }
+    readout.innerHTML = q.textContent +
+      (at.v ? ' <span class="depth">' + at.v + '/' + (depth - 1) + '</span>' : '');
+  }
+
+  Reveal.initialize({
+    hash: true,
+    width: 1920, height: 1080, margin: 0.045,
+    minScale: 0.2, maxScale: 2.0,
+    slideNumber: false,
+    transition: 'fade',
+    controlsLayout: 'edges',
+    controlsTutorial: false,
+    plugins: [RevealNotes]
+  });
+
+  /* ---- Dark mode: D toggles it; it starts light. --------------------*/
+  function setDark(on) {
+    document.documentElement.classList.toggle('dark', on);
+    try { localStorage.setItem('fourms-deck-dark', on ? '1' : '0'); } catch (e) {}
+  }
+  try { setDark(localStorage.getItem('fourms-deck-dark') === '1'); } catch (e) {}
+  Reveal.addKeyBinding({ keyCode: 68, key: 'D', description: 'Toggle dark mode' },
+    function () { setDark(!document.documentElement.classList.contains('dark')); });
+
+  Reveal.on('ready', showPosition);
+  Reveal.on('slidechanged', showPosition);
+  if (/print-pdf|print=1/.test(location.search)) readout.style.display = 'none';
+})();
+</script>
+</body>
+</html>

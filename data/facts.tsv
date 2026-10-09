@@ -1,0 +1,16 @@
+key	value	what	source
+founded	2008	year the lab got its name and became a national infrastructure (work began in 2004)	uio.no/ritmo/english/research/labs/fourms/About/ ; INFRA project description 2020 p1, p8
+audience	20	audience seats for concerts in the lab	uio.no/.../fourms/facilities/physical-lab/ ; INFRA 2020 p1
+mocap-hz	500	highest motion capture frame rate, Hz	uio.no/.../fourms/About/faq/
+audio-channels	24	audio channels recorded in sync	uio.no/.../fourms/About/
+speakers	24	loudspeakers in the array	uio.no/.../fourms/About/
+users-internal	30	internal users a year, as of 2020	INFRA 2020 p11
+users-external	20	external users a year, as of 2020	INFRA 2020 p11
+users-international-pct	50	share of users from abroad, %, as of 2020	INFRA 2020 p11
+user-countries	13	countries the users came from, as of 2020	INFRA 2020 p11
+mooc-learners	10000	learners on Music Moves by 2020 (more than)	INFRA 2020 p6, p9
+equivital	70	Equivital physiology sensors for groups	uio.no/.../fourms/facilities/
+projects-active	9	active projects listed on the lab page	uio.no/.../fourms/
+projects-completed	20	completed projects since 2004 listed on the lab page	uio.no/.../fourms/
+movesense	20	Movesense sensors (IMU and ECG)	uio.no/.../fourms/facilities/
+eye-trackers	7	Pupil Labs eye trackers, 4 Pupil Core and 3 Neon	uio.no/.../fourms/facilities/

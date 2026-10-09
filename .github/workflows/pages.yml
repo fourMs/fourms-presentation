@@ -1,0 +1,56 @@
+name: Deploy the deck to Pages
+
+# The deck is static — vendored reveal.js, self-hosted fonts, and plain
+# HTML — so there is nothing to build. This uploads the repository as it
+# stands and deploys it. Pages on this repository is configured with
+# build_type "workflow", which means nothing is published until a run
+# like this one deploys it.
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v6
+
+      # upload-pages-artifact excludes .git and .github itself.
+      - name: Upload the deck
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: .
+
+      # Pages intermittently fails at syncing_files with "Deployment
+      # failed, try again later" — same retry pattern as mishmash-web.
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
+        continue-on-error: true
+
+      - name: Wait before retry
+        if: steps.deployment.outcome == 'failure'
+        run: sleep 120
+
+      - name: Deploy to GitHub Pages (retry)
+        if: steps.deployment.outcome == 'failure'
+        uses: actions/deploy-pages@v5

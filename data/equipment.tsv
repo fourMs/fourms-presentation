@@ -1,0 +1,24 @@
+where	group	item	source
+lab	Motion capture	Qualisys optical motion capture, 13 Oqus cameras	fourms/facilities/physical-lab
+lab	Motion capture	Optitrack optical motion capture, 2 × 8 cameras	fourms/facilities/physical-lab
+lab	Motion capture	Xsens MVN full-body mobile motion capture	fourms/facilities/physical-lab
+lab	Motion capture	Polhemus Patriot magnetic 6-DOF tracking	fourms/facilities/physical-lab
+lab	Biosignals	MEGA biosignal sensors, 4 EMG and 2 IMU	fourms/facilities/physical-lab
+lab	Biosignals	Delsys biosignal sensors, 8 EMG and 4 ECG	fourms/facilities/physical-lab
+lab	Biosignals	Sweetzpot respiration sensors, 10	fourms/facilities/physical-lab
+lab	Sound	24 Genelec 8020B loudspeakers on a truss	fourms/facilities/physical-lab
+lab	Sound	Wavefield synthesis array, 24 channels	fourms/facilities/physical-lab
+lab	Sound	2 hemispherical 6-channel loudspeakers	fourms/facilities/physical-lab
+lab	Sound	SSL AD/DA converters and RME MADIface XT	fourms/facilities/physical-lab
+lab	Instruments	TouchKeys, Roli Seaboard Grand, Soundplane, LinnStrument, ContinuuMini	fourms/facilities/physical-lab
+portable	Motion capture	Optitrack Flex 13 optical motion capture	fourms/facilities
+portable	Motion capture	Nansense motion capture suits with gloves	fourms/facilities
+portable	Eyes	Pupil Labs Pupil Core, 4	fourms/facilities
+portable	Eyes	Pupil Labs Neon, 3	fourms/facilities
+portable	Wearables	AX3 accelerometers	fourms/facilities
+portable	Wearables	Delsys EMG: 8 Trigno, 2 FSR, 4 ECG	fourms/facilities
+portable	Wearables	Equivital: motion, ECG, respiration and skin temperature, 70	fourms/facilities
+portable	Wearables	Movesense: IMU and ECG, 20	fourms/facilities
+portable	Video	GoPros, camcorders, thermal cameras	fourms/facilities
+portable	Video	White, coloured and infrared lighting; video mixers and recorders	fourms/facilities
+portable	Sound	Soundcards, mixers, microphones and recorders; electronic pianos and drums	fourms/facilities
