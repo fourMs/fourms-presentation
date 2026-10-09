@@ -28,3 +28,7 @@ The PDF is made of screenshots from headless Chrome, so it has no text layer.
 ## Credits
 
 Photographs from RITMO's and the fourMs Lab's photo archives and from RITMO's published annual reports. Built with reveal.js (MIT licence).
+
+## Licence
+
+The code and text are under the MIT licence (see `LICENSE`). The photographs, logos and figures are not covered by it; they belong to the fourMs Lab, RITMO, the University of Oslo and the photographers.
